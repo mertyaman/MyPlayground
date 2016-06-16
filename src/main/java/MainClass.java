@@ -10,6 +10,7 @@ public class MainClass {
         System.out.println(cityName);
 
         EwsAPIOperations ewsAPIOperations =new EwsAPIOperations();
+        ewsAPIOperations.sendMessage();
         ewsAPIOperations.listFirstTenItems();
         
 
