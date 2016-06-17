@@ -1,3 +1,5 @@
+import org.apache.commons.configuration.ConfigurationException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +9,9 @@ import java.sql.SQLException;
  * Created by mertyaman on 16/06/16 for MyPlayground.
  */
 public class DBQueries extends OracleDBConnection{
+
+    public DBQueries() throws ConfigurationException {
+    }
 
     public static String getCityName(String plateNumber){
         Connection con=createConnection();

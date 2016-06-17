@@ -31,6 +31,8 @@
         <project.maven-surefire-plugin.version>2.19.1</project.maven-surefire-plugin.version>
         <project.maven-compiler-plugin.version>3.5.1</project.maven-compiler-plugin.version>
         <project.ews-java-api.version>2.0</project.ews-java-api.version>
+        <project.jasypt.version>1.9.2</project.jasypt.version>
+        <project.commons-configuration.version>1.10</project.commons-configuration.version>
     </properties>
 
 
@@ -47,6 +49,18 @@
             <groupId>com.microsoft.ews-java-api</groupId>
             <artifactId>ews-java-api</artifactId>
             <version>${project.ews-java-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt</artifactId>
+            <version>${project.jasypt.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>${project.commons-configuration.version}</version>
         </dependency>
 
 

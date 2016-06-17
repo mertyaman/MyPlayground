@@ -13,17 +13,26 @@ import microsoft.exchange.webservices.data.credential.WebCredentials;
 import microsoft.exchange.webservices.data.property.complex.MessageBody;
 import microsoft.exchange.webservices.data.search.FindItemsResults;
 import microsoft.exchange.webservices.data.search.ItemView;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 /**
  * Created by mertyaman on 16/06/16 for MyPlayground.
  */
 public class EwsAPIOperations {
 
-    private static String mailAddress="your mail address";
-    private static String mailPassword="your mail password";
-    private static String mailTo="Recipient mail address";
-    private static String proxyHost="proxyHost";
-    private static int proxyPort=proxyPort;
+    private final String propertyFileName = System.getProperty("user.dir")+"/src/main/resources/passwords.properties";
+    PropertiesConfiguration config = new PropertiesConfiguration(propertyFileName);
+
+
+    String mailAddress=config.getString("mailAddress");
+    String mailPassword=config.getString("mailPassword");
+    String mailTo=config.getString("mailTo");
+    String proxyHost=config.getString("proxyHost");
+    String proxyPort = config.getString("proxyPort");
+
+    public EwsAPIOperations() throws ConfigurationException {
+    }
 
 
 
@@ -34,12 +43,13 @@ public class EwsAPIOperations {
         }
     }
 
-    public static ExchangeService getConnection(){
+    public ExchangeService getConnection(){
+
         ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
         ExchangeCredentials credentials = new WebCredentials(mailAddress, mailPassword);
 
         // set up the proxy if necessary
-        WebProxy proxy = new WebProxy(proxyHost, proxyPort);
+        WebProxy proxy = new WebProxy(proxyHost, Integer.parseInt(proxyPort));
         service.setWebProxy(proxy);
 
 
@@ -54,7 +64,7 @@ public class EwsAPIOperations {
         return service;
     }
 
-    public static void sendMessage(){
+    public void sendMessage(){
         EmailMessage msg= null;
         try {
             msg = new EmailMessage(getConnection());
@@ -67,7 +77,7 @@ public class EwsAPIOperations {
             msg.setSubject("Microsoft Exchange Web Services JAVA API Test");
             msg.setBody(MessageBody.getMessageBodyFromText("Sent using the EWS Java API."));
             msg.getToRecipients().add(mailTo);
-//            msg.getAttachments().addFileAttachment("MailAttachment.txt");
+            msg.getAttachments().addFileAttachment("MailAttachment.txt");
             msg.send();
             System.out.println("Mail basarili bir sekilde gonderildi.");
         } catch (Exception e) {
@@ -82,7 +92,7 @@ public class EwsAPIOperations {
         try {
             folder = new Folder(service);
             findResults = service.findItems(WellKnownFolderName.Inbox, view);
-            //MOOOOOOST IMPORTANT: load messages' properties before
+            //IMPORTANT: load messages' properties before
             service.loadPropertiesForItems(findResults, PropertySet.FirstClassProperties);
         }
         catch (Exception e) {

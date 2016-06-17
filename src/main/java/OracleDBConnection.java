@@ -1,4 +1,6 @@
 import oracle.jdbc.pool.OracleDataSource;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 import java.sql.*;
 
@@ -6,10 +8,31 @@ import java.sql.*;
  * Created by mertyaman on 16/06/16 for MyPlayground.
  */
 public class OracleDBConnection {
-    private static final String host="jdbc:oracle:thin:host:port/service";
-    private static final String username="username";
-    private static final String password="password";
-    private static OracleDataSource ods = null;
+
+
+    private final String propertyFileName = System.getProperty("user.dir")+"/src/main/resources/passwords.properties";
+    PropertiesConfiguration config = new PropertiesConfiguration(propertyFileName);
+
+    String host = config.getString("DBhost");
+    String username = config.getString("DBusername");
+    String password = config.getString("DBpassword");
+
+    public OracleDBConnection() throws ConfigurationException {
+    }
+
+    public static Connection createConnection(){
+        Connection con = null;
+        try {
+            OracleDBConnection oracleDBConnection =new OracleDBConnection();
+            con = DriverManager.getConnection(oracleDBConnection.host, oracleDBConnection.username, oracleDBConnection.password );
+            System.out.println("db connection basarili.");
+        }
+        catch (SQLException | ConfigurationException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return con;
+    }
 
     public static void endConnection(ResultSet rs, Statement preparedStatement, Connection con){
         if (rs != null) {
@@ -36,18 +59,5 @@ public class OracleDBConnection {
                 System.out.println(e2.getMessage());
             }
         }
-    }
-    public static Connection createConnection(){
-        Connection con = null;
-        try {
-            con = DriverManager.getConnection( host, username, password );
-            ods = new OracleDataSource();
-            con = ods.getConnection();
-            System.out.println("db connection basarili.");
-        }
-        catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return con;
     }
 }
