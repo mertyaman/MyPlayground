@@ -8,7 +8,6 @@ public class MainClass {
 
     public static void main(String[] args){
 
-<<<<<<< HEAD
         dbQuery();
 
         ExchangeApiMail();
@@ -31,12 +30,6 @@ public class MainClass {
             encrypt();
         }
     }
-=======
-        EwsAPIOperations ewsAPIOperations =new EwsAPIOperations();
-        ewsAPIOperations.sendMessage();
-        ewsAPIOperations.listFirstTenItems();
-        
->>>>>>> origin/master
 
     public static void dbQuery(){
         decrypt();
